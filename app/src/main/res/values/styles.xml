@@ -1,0 +1,8 @@
+<resources>
+
+    <style name="AppTheme" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:colorBackground">@color/background</item>
+        <item name="cardViewStyle">@style/CardView</item>
+
+    </style>
+</resources>

@@ -1,0 +1,19 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_sub_name">눈 건강 지킴이</string>
+    <string name="app_name">노안 탈출</string>
+    <string name="menu_camera">사진 찍기</string>
+    <string name="menu_gallery">사진 선택</string>
+    <string name="menu_eye_info">눈 건강 정보</string>
+    <string name="menu_settings">설정</string>
+    <string name="menu_icon">menu icon</string>
+
+    <string name="waiting_eyecatch">waiting eyecatch</string>
+
+    <string name="permission_description">앱 내부에서 카메라 앱을 실행할 권한과 이미지 파일을 저장할 권한이 필요합니다.</string>
+    <string name="request_image">request image</string>
+    <string name="media_stop">media stop</string>
+    <string name="media_play">media play</string>
+
+    <string name="waiting_image" tools:ignore="TypographyFractions">이미지의 텍스트를 음성으로\n변환하고 있습니다. (1/2)</string>
+    <string name="waiting_speech">음성을 받아오는 중 입니다. (2/2)</string>
+</resources>
