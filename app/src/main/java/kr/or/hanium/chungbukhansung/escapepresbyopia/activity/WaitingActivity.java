@@ -38,7 +38,7 @@ public class WaitingActivity extends Activity {
             HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
             interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
             OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
-            Retrofit retrofit = new Retrofit.Builder().baseUrl("http://192.168.0.200:8080")
+            Retrofit retrofit = new Retrofit.Builder().baseUrl(Image2SpeechService.BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create()).client(client).build();
             service = retrofit.create(Image2SpeechService.class);
         }

@@ -9,8 +9,10 @@ import retrofit2.http.POST;
 import retrofit2.http.Part;
 
 public interface Image2SpeechService {
+    String BASE_URL = "http://192.168.0.200:8080";
+    String CONTEXT = "";
 
-    @POST("/api/image")
+    @POST(CONTEXT + "/api/image")
     @Multipart
     Call<Map<String, String>> postImage(@Part MultipartBody.Part image);
 }

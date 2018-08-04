@@ -14,14 +14,24 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import kr.or.hanium.chungbukhansung.escapepresbyopia.R;
+import kr.or.hanium.chungbukhansung.escapepresbyopia.model.AudioMetaItem;
 
 public class SpeechActivity extends Activity implements View.OnClickListener, MediaPlayer.OnCompletionListener {
 
     private ImageButton btnStop, btnPlay;
     private MediaPlayer player;
+
+    private String text, textMeta;
+    private List<AudioMetaItem> audioMeta;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +40,19 @@ public class SpeechActivity extends Activity implements View.OnClickListener, Me
 
         Intent intent = getIntent();
         String imagePath = intent.getStringExtra("imagePath"); //이미지 경로
-        String text = intent.getStringExtra("text"); //추출한 텍스트 내용
-        String speechPath = intent.getStringExtra("speechPath"); //음성파일 경로
+        text = intent.getStringExtra("text");
+        textMeta = intent.getStringExtra("textMeta");
+        String speechPath = intent.getStringExtra("speechPath");
+        String audioMetaPath = intent.getStringExtra("audioMetaPath");
+
+        audioMeta = new ArrayList<>();
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(audioMetaPath));
+            for (String line = reader.readLine(); line != null; line = reader.readLine())
+                audioMeta.add(new Gson().fromJson(line, AudioMetaItem.class));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         // 사용자가 선택한 이미지를 보여준다
         ImageView imageView = findViewById(R.id.speechImageView);
