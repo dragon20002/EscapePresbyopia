@@ -9,8 +9,8 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.media.ExifInterface;
+import android.support.v7.widget.AppCompatImageButton;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -27,7 +27,7 @@ import kr.or.hanium.chungbukhansung.escapepresbyopia.model.AudioMetaItem;
 
 public class SpeechActivity extends Activity implements View.OnClickListener, MediaPlayer.OnCompletionListener {
 
-    private ImageButton btnStop, btnPlay;
+    private AppCompatImageButton btnStop, btnPlay;
     private MediaPlayer player;
 
     private String text, textMeta;
@@ -83,8 +83,18 @@ public class SpeechActivity extends Activity implements View.OnClickListener, Me
         btnPlay = findViewById(R.id.speechBtnPlay); //재생 및 일시정지 버튼
         btnPlay.setOnClickListener(this);
 
-        player = MediaPlayer.create(this, Uri.parse(speechPath)); //mp3파일을 재생하는 미디어 플레이어
-        player.setOnCompletionListener(this);
+        try {
+            player = MediaPlayer.create(this, Uri.parse(speechPath)); //mp3파일을 재생하는 미디어 플레이어
+            player.setOnCompletionListener(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        player.pause();
+        super.onBackPressed();
     }
 
     @Override
@@ -99,10 +109,10 @@ public class SpeechActivity extends Activity implements View.OnClickListener, Me
         case R.id.speechBtnPlay:
             if (player.isPlaying()) {
                 player.pause();
-                btnPlay.setImageDrawable(getDrawable(android.R.drawable.ic_media_play));
+                btnPlay.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_media_play));
             } else {
                 player.start();
-                btnPlay.setImageDrawable(getDrawable(android.R.drawable.ic_media_pause));
+                btnPlay.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_media_pause));
             }
             break;
         default:
@@ -113,7 +123,7 @@ public class SpeechActivity extends Activity implements View.OnClickListener, Me
     @Override
     public void onCompletion(MediaPlayer mp) {
         player.seekTo(0);
-        btnPlay.setImageDrawable(getDrawable(android.R.drawable.ic_media_play));
+        btnPlay.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_media_play));
     }
 
     /* 이미지가 90도 회전되는 현상 처리 */

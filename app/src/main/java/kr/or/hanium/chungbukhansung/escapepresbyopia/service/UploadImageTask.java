@@ -1,5 +1,7 @@
 package kr.or.hanium.chungbukhansung.escapepresbyopia.service;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 
 import java.io.File;
@@ -32,8 +34,11 @@ public class UploadImageTask implements Callback<Map<String, String>>,EPDialog.D
         RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
         MultipartBody.Part image = MultipartBody.Part.createFormData("image", file.getName(), reqFile);
 
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
+        String voiceId = prefs.getString("voiceId", "Seoyeon");
+
         // HTTP 프로토콜로 서버에 이미지를 전송한다
-        WaitingActivity.service.postImage(image).enqueue(this);
+        WaitingActivity.service.postImage(image, voiceId).enqueue(this);
     }
 
     // 서버로부터 응답이 오면 호출된다

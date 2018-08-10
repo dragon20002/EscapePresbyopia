@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -13,7 +14,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
@@ -90,8 +90,9 @@ public class MainActivity extends Activity implements RecyclerView.OnItemTouchLi
     public void onTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
         View view = rv.findChildViewUnder(e.getX(), e.getY());
         if (view == null) {
-            for (int i = 0, n = rv.getChildCount(); i < n; i++)
-                rv.getChildAt(i).setElevation(11);
+            if (Build.VERSION.SDK_INT >= 21)
+                for (int i = 0, n = rv.getChildCount(); i < n; i++)
+                    rv.getChildAt(i).setElevation(11);
             return;
         }
 
@@ -99,24 +100,29 @@ public class MainActivity extends Activity implements RecyclerView.OnItemTouchLi
         switch (s) {
             /* ACTION_DOWN */
             case 0: case 1: case 2: case 3:
-                view.setElevation(4);
+                if (Build.VERSION.SDK_INT >= 21)
+                    view.setElevation(4);
                 break;
             /* ACTION_UP */
             case 4:
                 dispatchTakePictureIntent();
-                view.setElevation(11);
+                if (Build.VERSION.SDK_INT >= 21)
+                    view.setElevation(11);
                 break;
             case 5:
                 dispatchGalleryIntent();
-                view.setElevation(11);
+                if (Build.VERSION.SDK_INT >= 21)
+                    view.setElevation(11);
                 break;
             case 6:
                 Toast.makeText(this, "eye info", Toast.LENGTH_SHORT).show();
-                view.setElevation(11);
+                if (Build.VERSION.SDK_INT >= 21)
+                    view.setElevation(11);
                 break;
             case 7:
-                Toast.makeText(this, "settings", Toast.LENGTH_SHORT).show();
-                view.setElevation(11);
+                startActivity(new Intent(this, SettingsActivity.class));
+                if (Build.VERSION.SDK_INT >= 21)
+                    view.setElevation(11);
                 break;
             default:
         }

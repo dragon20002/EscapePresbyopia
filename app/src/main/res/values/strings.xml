@@ -16,4 +16,118 @@
 
     <string name="waiting_image" tools:ignore="TypographyFractions">이미지의 텍스트를 음성으로\n변환하고 있습니다. (1/2)</string>
     <string name="waiting_speech">음성을 받아오는 중 입니다. (2/2)</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <string-array name="voice_list_preference_entries">
+        <item>한글 (Seoyeon)</item>
+        <item>일본어 (Takumi)</item>
+        <item>일본어 (Mizuki)</item>
+        <item>US 영어 (Salli)</item>
+        <item>US 영어 (Matthew)</item>
+        <item>US 영어 (Kimberly)</item>
+        <item>US 영어 (Kendra)</item>
+        <item>US 영어 (Justin)</item>
+        <item>US 영어 (Joey)</item>
+        <item>US 영어 (Joanna)</item>
+        <item>US 영어 (Ivy)</item>
+        <item>터키어 (Filiz)</item>
+        <item>스웨덴어 (Astrid)</item>
+        <item>러시아어 (Tatyana)</item>
+        <item>러시아어 (Maxim)</item>
+        <item>루마니아어 (Carmen)</item>
+        <item>포르투갈어 (Inês)</item>
+        <item>포르투갈어 (Cristiano)</item>
+        <item>Brazialian 포르투갈어 (Vitória)</item>
+        <item>Brazialian 포르투갈어 (Ricardo)</item>
+        <item>폴란드어 (Maja)</item>
+        <item>폴란드어 (Jan)</item>
+        <item>폴란드어 (Jacek)</item>
+        <item>폴란드어 (Ewa)</item>
+        <item>네덜란드어 (Ruben)</item>
+        <item>네덜란드어 (Lotte)</item>
+        <item>노르웨이어 (Liv)</item>
+        <item>이탈리아어 (Giorgio)</item>
+        <item>이탈리아어 (Carla)</item>
+        <item>아이슬란드어 (Karl)</item>
+        <item>아이슬란드어 (Dóra)</item>
+        <item>프랑스어 (Mathieu)</item>
+        <item>프랑스어 (Léa)</item>
+        <item>프랑스어 (Céline)</item>
+        <item>Canadian 프랑스어 (Chantal)</item>
+        <item>US 스페인어 (Penélope)</item>
+        <item>US 스페인어 (Miguel)</item>
+        <item>Castilian 스페인어 (Enrique)</item>
+        <item>Castilian 스페인어 (Conchita)</item>
+        <item>Welsh 영어 (Geraint)</item>
+        <item>Indian 영어 (Raveena)</item>
+        <item>Indian 영어 (Aditi)</item>
+        <item>British 영어 (Emma)</item>
+        <item>British 영어 (Brian)</item>
+        <item>British 영어 (Amy)</item>
+        <item>Australian 영어 (Russell)</item>
+        <item>Australian 영어 (Nicole)</item>
+        <item>독일어 (Vicki)</item>
+        <item>독일어 (Marlene)</item>
+        <item>독일어 (Hans)</item>
+        <item>덴마크어 (Naja)</item>
+        <item>덴마크어 (Mads)</item>
+        <item>웨일스어 (Gwyneth)</item>
+    </string-array>
+
+    <string-array name="voice_list_preference_entry_values">
+        <item>Seoyeon</item>
+        <item>Takumi</item>
+        <item>Mizuki</item>
+        <item>Salli</item>
+        <item>Matthew</item>
+        <item>Kimberly</item>
+        <item>Kendra</item>
+        <item>Justin</item>
+        <item>Joey</item>
+        <item>Joanna</item>
+        <item>Ivy</item>
+        <item>Filiz</item>
+        <item>Astrid</item>
+        <item>Tatyana</item>
+        <item>Maxim</item>
+        <item>Carmen</item>
+        <item>Inês</item>
+        <item>Cristiano</item>
+        <item>Vitória</item>
+        <item>Ricardo</item>
+        <item>Maja</item>
+        <item>Jan</item>
+        <item>Jacek</item>
+        <item>Ewa</item>
+        <item>Ruben</item>
+        <item>Lotte</item>
+        <item>Liv</item>
+        <item>Giorgio</item>
+        <item>Carla</item>
+        <item>Karl</item>
+        <item>Dóra</item>
+        <item>Mathieu</item>
+        <item>Léa</item>
+        <item>Céline</item>
+        <item>Chantal</item>
+        <item>Penélope</item>
+        <item>Miguel</item>
+        <item>Enrique</item>
+        <item>Conchita</item>
+        <item>Geraint</item>
+        <item>Raveena</item>
+        <item>Aditi</item>
+        <item>Emma</item>
+        <item>Brian</item>
+        <item>Amy</item>
+        <item>Russell</item>
+        <item>Nicole</item>
+        <item>Vicki</item>
+        <item>Marlene</item>
+        <item>Hans</item>
+        <item>Naja</item>
+        <item>Mads</item>
+        <item>Gwyneth</item>
+    </string-array>
+
 </resources>

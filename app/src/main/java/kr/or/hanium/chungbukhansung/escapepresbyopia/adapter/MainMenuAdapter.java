@@ -1,5 +1,6 @@
 package kr.or.hanium.chungbukhansung.escapepresbyopia.adapter;
 
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -35,7 +36,8 @@ public class MainMenuAdapter extends RecyclerView.Adapter<MainMenuAdapter.ViewHo
         holder.menuView.setCardBackgroundColor(item.bg);
         holder.imageView.setImageResource(item.image);
         holder.textView.setText(item.label);
-        holder.itemView.setElevation(11);
+        if (Build.VERSION.SDK_INT >= 21)
+            holder.itemView.setElevation(11);
     }
 
     @Override

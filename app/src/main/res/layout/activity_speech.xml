@@ -21,7 +21,6 @@
         app:srcCompat="@drawable/ic_menu_gallery" />
 
     <ScrollView
-        style="@android:style/Widget.Material.ScrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginEnd="8dp"
@@ -46,7 +45,8 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:background="@android:color/transparent" />
+                android:background="@android:color/transparent"
+                android:textIsSelectable="true" />
         </LinearLayout>
     </ScrollView>
 
@@ -64,20 +64,20 @@
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
-        <ImageButton
+        <android.support.v7.widget.AppCompatImageButton
             android:id="@+id/speechBtnStop"
             style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/media_stop"
-            android:src="@drawable/ic_media_stop" />
+            app:srcCompat="@drawable/ic_media_stop" />
 
         <Space
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight=".5" />
 
-        <ImageButton
+        <android.support.v7.widget.AppCompatImageButton
             android:id="@+id/speechBtnPlay"
             style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="wrap_content"
