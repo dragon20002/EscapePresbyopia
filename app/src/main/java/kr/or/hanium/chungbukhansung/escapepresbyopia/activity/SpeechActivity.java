@@ -4,12 +4,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.media.ExifInterface;
 import android.support.v7.widget.AppCompatImageButton;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,12 +24,16 @@ import java.util.List;
 
 import kr.or.hanium.chungbukhansung.escapepresbyopia.R;
 import kr.or.hanium.chungbukhansung.escapepresbyopia.model.AudioMetaItem;
+import kr.or.hanium.chungbukhansung.escapepresbyopia.utils.ImageEditor;
 
 public class SpeechActivity extends Activity implements View.OnClickListener, MediaPlayer.OnCompletionListener {
 
-    private AppCompatImageButton btnStop, btnPlay;
+    private TextView speechTextView;
+
+    private AppCompatImageButton btnPlay;
     private MediaPlayer player;
 
+    private String imagePath;
     private String text, textMeta;
     private List<AudioMetaItem> audioMeta;
 
@@ -38,8 +42,9 @@ public class SpeechActivity extends Activity implements View.OnClickListener, Me
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_speech);
 
+        /* 데이터 초기화 */
         Intent intent = getIntent();
-        String imagePath = intent.getStringExtra("imagePath"); //이미지 경로
+        imagePath = intent.getStringExtra("imagePath"); //이미지 경로
         text = intent.getStringExtra("text");
         textMeta = intent.getStringExtra("textMeta");
         String speechPath = intent.getStringExtra("speechPath");
@@ -54,30 +59,41 @@ public class SpeechActivity extends Activity implements View.OnClickListener, Me
             e.printStackTrace();
         }
 
+        /* 뷰 초기화 */
         // 사용자가 선택한 이미지를 보여준다
-        ImageView imageView = findViewById(R.id.speechImageView);
+        ImageView speechImageView = findViewById(R.id.speechImageView);
 
         // 이미지뷰가 자동으로 90도 회전되서 나오는 현상 해결
         int exifDegree = 0;
         try {
             ExifInterface exif = new ExifInterface(imagePath);
             int exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-            exifDegree = exifOrientation2Degree(exifOrientation);
+            exifDegree = ImageEditor.exifOrientation2Degree(exifOrientation);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
         Bitmap scaled = Bitmap.createScaledBitmap(bitmap, 512, (int) (bitmap.getHeight() * (512.0 / bitmap.getWidth())), true);
-        Bitmap rotated = rotate(scaled, exifDegree);
-        imageView.setImageBitmap(rotated);
+        Bitmap rotated = ImageEditor.rotate(scaled, exifDegree);
+        speechImageView.setImageBitmap(rotated);
+
+        // 이미지 풀스크린 전환 버튼
+        AppCompatImageButton btnFullScreen = findViewById(R.id.speechImageFullScreenButton);
+        btnFullScreen.setOnClickListener(this);
+
+        // 텍스트 크기 조절 버튼
+        AppCompatImageButton btnScaleDown = findViewById(R.id.speechTextScaleDownButton);
+        btnScaleDown.setOnClickListener(this);
+        AppCompatImageButton btnScaleUp = findViewById(R.id.speechTextScaleUpButton);
+        btnScaleUp.setOnClickListener(this);
 
         // 추출한 텍스트 내용을 보여준다
-        TextView textView = findViewById(R.id.speechTextView);
-        textView.setText(text);
+        speechTextView = findViewById(R.id.speechTextView);
+        speechTextView.setText(text);
 
         // 음성 파일을 재생하는 플레이어 설정
-        btnStop = findViewById(R.id.speechBtnStop); //정지버튼
+        AppCompatImageButton btnStop = findViewById(R.id.speechBtnStop);
         btnStop.setOnClickListener(this);
 
         btnPlay = findViewById(R.id.speechBtnPlay); //재생 및 일시정지 버튼
@@ -93,19 +109,41 @@ public class SpeechActivity extends Activity implements View.OnClickListener, Me
 
     @Override
     public void onBackPressed() {
-        player.pause();
+        try {
+            player.pause();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
         super.onBackPressed();
     }
 
     @Override
     public void onClick(View v) {
-        int id = v.getId();
+        float size;
 
-        switch (id) {
+        switch (v.getId()) {
+        case R.id.speechImageFullScreenButton:
+            startActivity(new Intent(this, FullscreenActivity.class)
+                    .putExtra("imagePath", imagePath));
+            break;
+
+        case R.id.speechTextScaleDownButton:
+            size = speechTextView.getTextSize() / getResources().getDisplayMetrics().scaledDensity - 2;
+            if (size > 0)
+                speechTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, size);
+            break;
+
+        case R.id.speechTextScaleUpButton:
+            size = speechTextView.getTextSize() / getResources().getDisplayMetrics().scaledDensity + 2;
+            if (size < 72)
+                speechTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, size);
+            break;
+
         case R.id.speechBtnStop:
             player.pause();
             onCompletion(player);
             break;
+
         case R.id.speechBtnPlay:
             if (player.isPlaying()) {
                 player.pause();
@@ -115,6 +153,7 @@ public class SpeechActivity extends Activity implements View.OnClickListener, Me
                 btnPlay.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_media_pause));
             }
             break;
+
         default:
         }
     }
@@ -124,25 +163,6 @@ public class SpeechActivity extends Activity implements View.OnClickListener, Me
     public void onCompletion(MediaPlayer mp) {
         player.seekTo(0);
         btnPlay.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_media_play));
-    }
-
-    /* 이미지가 90도 회전되는 현상 처리 */
-    private int exifOrientation2Degree(int exifOrientation) {
-        switch (exifOrientation) {
-            case ExifInterface.ORIENTATION_ROTATE_90:
-                return 90;
-            case ExifInterface.ORIENTATION_ROTATE_180:
-                return 180;
-            case ExifInterface.ORIENTATION_ROTATE_270:
-                return 270;
-        }
-        return 0;
-    }
-
-    private Bitmap rotate(Bitmap bitmap, float degree) {
-        Matrix matrix = new Matrix();
-        matrix.postRotate(degree);
-        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
     }
 
 }

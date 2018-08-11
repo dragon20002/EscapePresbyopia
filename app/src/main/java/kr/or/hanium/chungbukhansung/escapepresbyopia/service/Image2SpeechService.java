@@ -12,7 +12,7 @@ import retrofit2.http.Part;
 import retrofit2.http.Path;
 
 public interface Image2SpeechService {
-    String BASE_URL = "http://my.ip.num.ber:8080";
+    String BASE_URL = "http://13.209.76.173:8080";
     String CONTEXT = "ep-server";
 
     @GET(CONTEXT + "/api/image2speech")

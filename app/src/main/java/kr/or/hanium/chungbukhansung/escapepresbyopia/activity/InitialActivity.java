@@ -34,7 +34,7 @@ public class InitialActivity extends Activity {
 
     @SuppressLint("StaticFieldLeak")
     public class InitialActivityTask extends AsyncTask<Void, Integer, Void> {
-        private final int HOLDING_TIME = 1500;
+        private final int HOLDING_TIME = 500;
 
         // 쓰레드 시작 전에 호출된다
         @Override

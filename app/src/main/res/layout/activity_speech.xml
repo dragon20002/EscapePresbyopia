@@ -9,22 +9,29 @@
     <ImageView
         android:id="@+id/speechImageView"
         android:layout_width="0dp"
-        android:layout_height="200dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_height="250dp"
         android:adjustViewBounds="true"
+        android:background="@android:color/background_dark"
         android:contentDescription="@string/request_image"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_menu_gallery" />
 
+    <android.support.v7.widget.AppCompatImageButton
+        android:id="@+id/speechImageFullScreenButton"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:adjustViewBounds="true"
+        android:src="@drawable/full_screen"
+        android:layout_margin="8dp"
+        app:layout_constraintEnd_toEndOf="@id/speechImageView"
+        app:layout_constraintTop_toTopOf="@id/speechImageView" />
+
     <ScrollView
+        android:id="@+id/speechTextViewScroll"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:background="@android:color/white"
         app:layout_constraintBottom_toTopOf="@id/speechLinearLayout"
@@ -46,9 +53,29 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:background="@android:color/transparent"
-                android:textIsSelectable="true" />
+                android:textIsSelectable="true"
+                android:textSize="18sp" />
         </LinearLayout>
     </ScrollView>
+
+    <android.support.v7.widget.AppCompatImageButton
+        android:id="@+id/speechTextScaleUpButton"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:adjustViewBounds="true"
+        android:src="@drawable/scale_up"
+        android:layout_margin="8dp"
+        app:layout_constraintEnd_toEndOf="@id/speechTextViewScroll"
+        app:layout_constraintTop_toTopOf="@id/speechTextViewScroll" />
+
+    <android.support.v7.widget.AppCompatImageButton
+        android:id="@+id/speechTextScaleDownButton"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:src="@drawable/scale_down"
+        android:layout_margin="8dp"
+        app:layout_constraintEnd_toEndOf="@id/speechTextViewScroll"
+        app:layout_constraintTop_toBottomOf="@id/speechTextScaleUpButton" />
 
     <LinearLayout
         android:id="@+id/speechLinearLayout"

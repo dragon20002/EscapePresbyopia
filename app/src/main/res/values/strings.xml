@@ -130,4 +130,6 @@
         <item>Gwyneth</item>
     </string-array>
 
+    <string name="title_activity_fullscreen">FullscreenActivity</string>
+
 </resources>

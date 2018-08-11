@@ -22,7 +22,7 @@ public class EPDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getActivity()));
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage(message)
                 .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                     @Override
