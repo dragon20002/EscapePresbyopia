@@ -1,15 +1,13 @@
 package kr.or.hanium.chungbukhansung.escapepresbyopia.service;
 
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
-import kr.or.hanium.chungbukhansung.escapepresbyopia.R;
 import kr.or.hanium.chungbukhansung.escapepresbyopia.activity.WaitingActivity;
-import kr.or.hanium.chungbukhansung.escapepresbyopia.view.EPDialog;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -17,25 +15,26 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class UploadImageTask implements Callback<Map<String, String>>,EPDialog.DialogButtonListener {
-
-    private final WaitingActivity activity;
-    private final String imagePath;
-
-    public UploadImageTask(WaitingActivity activity, String imagePath) {
-        this.activity = activity;
-        this.imagePath = imagePath;
-        request();
+public class UploadImageTask implements Callback<Map<String, String>> {
+    public interface TaskListener {
+        void onResponse(String imagePath, String text, String textMeta, String audio, String audioMeta);
+        void onFailure(String imagePath);
     }
 
-    private void request() {
+    private TaskListener listener;
+    private List<String> imagePaths;
+
+    public UploadImageTask(TaskListener listener) {
+        this.listener = listener;
+        imagePaths = new ArrayList<>();
+    }
+
+    public void request(String imagePath, String voiceId) {
+        imagePaths.add(imagePath);
         File file = new File(imagePath);
 
         RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
         MultipartBody.Part image = MultipartBody.Part.createFormData("image", file.getName(), reqFile);
-
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
-        String voiceId = prefs.getString("voiceId", "Seoyeon");
 
         // HTTP 프로토콜로 서버에 이미지를 전송한다
         WaitingActivity.service.postImage(image, voiceId).enqueue(this);
@@ -44,20 +43,16 @@ public class UploadImageTask implements Callback<Map<String, String>>,EPDialog.D
     // 서버로부터 응답이 오면 호출된다
     @Override
     public void onResponse(@NonNull Call<Map<String, String>> call, @NonNull Response<Map<String, String>> response) {
-        int code = response.code();
-        switch (code) {
+        if (imagePaths.size() < 1) return;
+        String imagePath = imagePaths.remove(0);
+
+        switch (response.code()) {
         case 200: //HTTP 상태코드 OK
-            activity.textView.setText(activity.getString(R.string.waiting_speech));
             Map<String, String> map = response.body();
             if (map == null) return;
-
-            String text = map.get("text"); //이미지에서 추출한 텍스트 내용
-            String textMeta = map.get("textMeta"); //이미지에서 추출한 텍스트 위치
-            String audio = map.get("audio"); //서버에 저장된 음성 파일의 URL
-            String audioMeta = map.get("audioMeta"); //텍스트가 음성파일 몇 초에 나타나는지 있는 메타파일
-
-            // 음성 파일 다운로드 쓰레드 실행
-            new DownloadSpeechTask(activity, imagePath, text, textMeta, audio, audioMeta).execute();
+            listener.onResponse(imagePath,
+                    map.get("text"), map.get("textMeta"),
+                    map.get("audio"), map.get("audioMeta"));
             break;
         default:
         }
@@ -67,20 +62,8 @@ public class UploadImageTask implements Callback<Map<String, String>>,EPDialog.D
     @Override
     public void onFailure(@NonNull Call<Map<String, String>> call, @NonNull Throwable t) {
         t.printStackTrace();
-        new EPDialog()
-                .setListener(this)
-                .setMessage("네트워크 연결을 확인해주세요.\n다시 시도하시겠습니까?")
-                .show(activity.getFragmentManager(), "음성 변환 실패");
-    }
-
-    @Override
-    public void onDialogPositive() {
-        request();
-    }
-
-    @Override
-    public void onDialogNegative() {
-        activity.finish();
+        String imagePath = imagePaths.remove(0);
+        listener.onFailure(imagePath);
     }
 
 }
